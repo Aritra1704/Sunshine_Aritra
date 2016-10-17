@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#000000</color>
+    <color name="background2">#000088</color>
+    <color name="digital_text">#ffffff</color>
+
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorMorning">#45F3F8</color>
+    <color name="colorNoon">#CDF845</color>
+    <color name="colorEvening">#74BCC7</color>
+    <color name="colorNight">#404193</color>
+</resources>
