@@ -32,6 +32,7 @@ import com.arpaul.sunshine_aritra.MainActivity;
 import com.arpaul.sunshine_aritra.R;
 import com.arpaul.sunshine_aritra.Utility;
 import com.arpaul.sunshine_aritra.data.WeatherContract;
+import com.arpaul.sunshine_aritra.wearableService.SendWearableDataService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -304,6 +305,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                         new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
 
                 notifyWeather();
+                upWatchFace();
             }
 
             Log.d(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
@@ -312,6 +314,13 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
+    }
+
+    private void upWatchFace(){
+        Context context = getContext();
+        Intent mIntent = new Intent(context, SendWearableDataService.class);
+        mIntent.setAction("ACTION_UPDATE_WATCHFACE");
+        context.startService(mIntent);
     }
 
     private void notifyWeather() {

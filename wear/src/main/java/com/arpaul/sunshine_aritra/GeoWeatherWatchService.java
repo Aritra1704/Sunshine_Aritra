@@ -348,7 +348,7 @@ public class GeoWeatherWatchService extends CanvasWatchFaceService {
             canvas.drawLine(0, height/2, width, height/2, linePaint);
 
             //Remove later
-            setDummyData();
+//            setDummyData();
 
             String day = CalendarUtils.getDateinPattern(WearableConstants.DATE_PATTERN_WEEKNAME_FORMAT);
             String date = CalendarUtils.getDateinPattern(WearableConstants.DATE_PATTERN_WEATHER_DETAIL);
