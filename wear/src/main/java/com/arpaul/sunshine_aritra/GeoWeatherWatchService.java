@@ -20,6 +20,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
@@ -61,7 +62,7 @@ public class GeoWeatherWatchService extends CanvasWatchFaceService {
     private Paint mBackgroundPaint;
     private Bitmap mBackgroundBitmap;
 
-    int mWeatherIcon;
+    int mWeatherIcon = 0;
     String mWeatherHigh;
     String mWeatherLow;
     String mWeatherSky;
@@ -381,19 +382,23 @@ public class GeoWeatherWatchService extends CanvasWatchFaceService {
                 canvas.drawText(textMax, xOffsetMax, height/2 + yOffsetMax, mTPMaxHigh);
                 canvas.drawText(textMin, xOffsetMin, height/2 + yOffsetMin, mTPMinHigh);
 
+                if(mWeatherIcon > 0) {
                     //Icon
-                Drawable b = getResources().getDrawable(WearableConstants.getArtResourceForWeatherCondition(mWeatherIcon));
-                Bitmap icon = null;
-                if (((BitmapDrawable) b) != null) {
-                    icon = ((BitmapDrawable) b).getBitmap();
+                    Drawable b = getResources().getDrawable(WearableConstants.getArtResourceForWeatherCondition(mWeatherIcon));
+                    Bitmap icon = null;
+                    if (((BitmapDrawable) b) != null) {
+                        icon = ((BitmapDrawable) b).getBitmap();
+                    }
+                    Bitmap weatherIcon = Bitmap.createScaledBitmap(icon, (int) iconDimen, (int) iconDimen, true);
+                    float iconXOffset = xOffset + (int) getResources().getDimension(R.dimen.margin_70);
+                    canvas.drawBitmap(weatherIcon, iconXOffset, height/2, null);
                 }
-                Bitmap weatherIcon = Bitmap.createScaledBitmap(icon, (int) iconDimen, (int) iconDimen, true);
-                float iconXOffset = xOffset + (int) getResources().getDimension(R.dimen.margin_70);
-                canvas.drawBitmap(weatherIcon, iconXOffset, height/2, null);
 
-                String skyCondition = mWeatherSky;
-                float highTextLen = mTPMinHigh.measureText(skyCondition);
-                canvas.drawText(skyCondition, xDayPos - highTextLen/2, height/2 + yOffsetSkyCond, mTPMinHigh);
+                if(!TextUtils.isEmpty(mWeatherSky)) {
+                    String skyCondition = mWeatherSky;
+                    float highTextLen = mTPMinHigh.measureText(skyCondition);
+                    canvas.drawText(skyCondition, xDayPos - highTextLen/2, height/2 + yOffsetSkyCond, mTPMinHigh);
+                }
             }
 //                holder.ivWeather.setImageResource(AppConstants.getArtResourceForWeatherCondition(StringUtils.getInt(icon)));
         }
