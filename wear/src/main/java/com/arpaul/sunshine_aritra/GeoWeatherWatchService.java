@@ -353,8 +353,8 @@ public class GeoWeatherWatchService extends CanvasWatchFaceService {
 
             String day = CalendarUtils.getDateinPattern(WearableConstants.DATE_PATTERN_WEEKNAME_FORMAT);
             String date = CalendarUtils.getDateinPattern(WearableConstants.DATE_PATTERN_WEATHER_DETAIL);
-            String textMax = degreeFormat.format((double) StringUtils.getDouble(mWeatherHigh)) + (char) 0x00B0;
-            String textMin = degreeFormat.format((double) StringUtils.getDouble(mWeatherLow)) + (char) 0x00B0;
+            String textMax = mWeatherHigh;
+            String textMin = mWeatherLow;
 
             String current_time = CalendarUtils.getDateinPattern(CalendarUtils.TIME_FORMAT);
 
@@ -363,24 +363,35 @@ public class GeoWeatherWatchService extends CanvasWatchFaceService {
             if (mAmbient) {
                 float lowTextDateLen = mTextLowAmbientPaint.measureText(day + ", " + date);
                 float lowTextTempLen = mTextLowAmbientPaint.measureText(textMax + " / " + textMin);
-                canvas.drawText(day + ", " + date, xDayPos - lowTextDateLen/2, height/2 - yOffsetDay, mTextLowAmbientPaint);
+                if(mTextLowAmbientPaint != null)
+                    canvas.drawText(day + ", " + date, xDayPos - lowTextDateLen/2, height/2 - yOffsetDay, mTextLowAmbientPaint);
 
-                float lowTextCurTimeLen = mTextLowAmbientPaint.measureText(current_time);
-                canvas.drawText(current_time, xDayPos - lowTextCurTimeLen/2, height/2 - yOffsetTime, mTextLowAmbientPaint);
+                if(!TextUtils.isEmpty(current_time) && mTextLowAmbientPaint != null) {
+                    float lowTextCurTimeLen = mTextLowAmbientPaint.measureText(current_time);
+                    canvas.drawText(current_time, xDayPos - lowTextCurTimeLen/2, height/2 - yOffsetTime, mTextLowAmbientPaint);
+                }
 
-                canvas.drawText(textMax + " / " + textMin, xDayPos - lowTextTempLen/2, height/2 + yOffsetMax, mTextLowAmbientPaint);
-                String skyCondition = mWeatherSky;
-                float highTextLen = mTPMinHigh.measureText(skyCondition);
-                canvas.drawText(skyCondition, xDayPos - highTextLen/2, height/2 + yOffsetMax + 50, mTextLowAmbientPaint);
+                if(!TextUtils.isEmpty(textMax) && mTextLowAmbientPaint != null)
+                    canvas.drawText(textMax + " / " + textMin, xDayPos - lowTextTempLen/2, height/2 + yOffsetMax, mTextLowAmbientPaint);
+                if(!TextUtils.isEmpty(mWeatherSky) && mTextLowAmbientPaint != null) {
+                    String skyCondition = mWeatherSky;
+                    float highTextLen = mTPMinHigh.measureText(skyCondition);
+                    canvas.drawText(skyCondition, xDayPos - highTextLen/2, height/2 + yOffsetMax + 50, mTextLowAmbientPaint);
+                }
             } else {
                 float lowTextLen = mTPDayHigh.measureText(day + ", " + date);
-                canvas.drawText(day + ", " + date, xDayPos - lowTextLen/2, height/2 - yOffsetDay, mTPDayHigh);
+                if(mTPDayHigh != null)
+                    canvas.drawText(day + ", " + date, xDayPos - lowTextLen/2, height/2 - yOffsetDay, mTPDayHigh);
 
-                float lowTextCurTimeLen = mTPTimeHigh.measureText(current_time);
-                canvas.drawText(current_time, xDayPos - lowTextCurTimeLen/2, height/2 - yOffsetTime, mTPTimeHigh);
+                if(!TextUtils.isEmpty(current_time) && mTPTimeHigh != null) {
+                    float lowTextCurTimeLen = mTPTimeHigh.measureText(current_time);
+                    canvas.drawText(current_time, xDayPos - lowTextCurTimeLen/2, height/2 - yOffsetTime, mTPTimeHigh);
+                }
 
-                canvas.drawText(textMax, xOffsetMax, height/2 + yOffsetMax, mTPMaxHigh);
-                canvas.drawText(textMin, xOffsetMin, height/2 + yOffsetMin, mTPMinHigh);
+                if(!TextUtils.isEmpty(textMax) && !TextUtils.isEmpty(textMin) && mTPMaxHigh != null) {
+                    canvas.drawText(textMax, xOffsetMax, height/2 + yOffsetMax, mTPMaxHigh);
+                    canvas.drawText(textMin, xOffsetMin, height/2 + yOffsetMin, mTPMinHigh);
+                }
 
                 if(mWeatherIcon > 0) {
                     //Icon
@@ -391,10 +402,11 @@ public class GeoWeatherWatchService extends CanvasWatchFaceService {
                     }
                     Bitmap weatherIcon = Bitmap.createScaledBitmap(icon, (int) iconDimen, (int) iconDimen, true);
                     float iconXOffset = xOffset + (int) getResources().getDimension(R.dimen.margin_70);
-                    canvas.drawBitmap(weatherIcon, iconXOffset, height/2, null);
+                    if(weatherIcon != null)
+                        canvas.drawBitmap(weatherIcon, iconXOffset, height/2, null);
                 }
 
-                if(!TextUtils.isEmpty(mWeatherSky)) {
+                if(!TextUtils.isEmpty(mWeatherSky) && mTPMinHigh != null) {
                     String skyCondition = mWeatherSky;
                     float highTextLen = mTPMinHigh.measureText(skyCondition);
                     canvas.drawText(skyCondition, xDayPos - highTextLen/2, height/2 + yOffsetSkyCond, mTPMinHigh);

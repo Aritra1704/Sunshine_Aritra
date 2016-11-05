@@ -84,9 +84,8 @@ public class SendWearableDataService extends Service implements
                         WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
                 }, null, null, null);
         LogUtils.debugLog("data",cursor.getCount()+"");
-        if (cursor.moveToFirst()) {
-            int weatherId = cursor.getInt(cursor.getColumnIndex(
-                    WeatherContract.WeatherEntry.COLUMN_WEATHER_ID));
+        if (cursor != null && cursor.moveToFirst()) {
+            int weatherId = cursor.getInt(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID));
             String maxTemp = Utility.formatTemperature(this, cursor.getDouble(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP)));
             String minTemp = Utility.formatTemperature(this, cursor.getDouble(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP)));
             String shortDesc = Utility.formatTemperature(this, cursor.getDouble(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC)));
