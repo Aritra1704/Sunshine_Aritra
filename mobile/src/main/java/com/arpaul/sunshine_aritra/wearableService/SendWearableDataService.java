@@ -81,7 +81,8 @@ public class SendWearableDataService extends Service implements
                 weatherUri,
                 new String[]{WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
                         WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-                        WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
+                        WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
+                        WeatherContract.WeatherEntry.COLUMN_SHORT_DESC
                 }, null, null, null);
         LogUtils.debugLog("data",cursor.getCount()+"");
         if (cursor != null && cursor.moveToFirst()) {
